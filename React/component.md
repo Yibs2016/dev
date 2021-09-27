@@ -20,6 +20,87 @@
   a. 生命周期调用类似队列 didmount→HOC didmount→(HOCs didmount)→will unmount→HOC will unmount→(HOCs will unmount)
   b. 渲染劫持 if super.render() else return null、控制state
   
+##### 纯函数
+a. 给定输入返回相同输出
+b. 没有副作用
+c. 没有额外状态依赖
+
+##### 组件性能优化
+主因：影响网页性能--浏览器重绘重排
+主题：避免不必要的渲染
+常用：shouldComponentUpdate 默认true，始终执行render-vdom比较-是否需要更新 ——带来很多不必要渲染，例如父组件下未变动的子组件
+1. PureRender
+state,props深比较昂贵，浅比较覆盖的场景不够多
+```javascript
+import React, { Component } from 'react';
+import PureRenderMixin from 'react-addons-pure-render-mixin'; 
+class NameItem extends Component {
+ constructor(props) {
+  super(props);
+  this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this); //避免 Item 组件的重复渲染
+ }    
+ render() {    
+  return (
+    <Item>
+      <span>Arcthur</span>
+    </Item>
+  );
+ }
+} 
+``` 
+
+以下都会触发重新render
+a. 直接props设置对象或数组
+<Acount style = {{color: 'black'}}>
+<Item items={this.props.items.filter(item => item.val > 30)} /> 
+解决：让对象或数组保持在内存中，使用同一份引用
+b. 设置 props 方法，事件绑定在元素上 ——> 把绑定移到构造器内
+
+
+2. immutable
+背景：对象一般是可变的mutable,引用赋值可以节约内存，但是难以维护；深浅拷贝又会造成内存浪费
+原理：持久化数据结构，对象树中一个节点变化，只修改影响到的节点，其他节点共享
+特点：
+1. 一旦创建就不可更改
+2. 修改immutable返回新immutable对象
+缺点：侵入性强
+
+3.immutable 与 pureRender
+pureRender的困境：深比较昂贵，引用比较覆盖场景不足
+immutable的is
+```javascript
+shouldComponentUpdate(nextProps, nextState) {
+ const thisProps = this.props || {};
+  const thisState = this.state || {};
+  if (Object.keys(thisProps).length !== Object.keys(nextProps).length ||
+    Object.keys(thisState).length !== Object.keys(nextState).length) {
+    return true;
+  }
+  for (const key in nextProps) {
+    if (nextProps.hasOwnProperty(key) &&
+      !is(thisProps[key], nextProps[key])) {
+      return true;
+    }
+  }
+  for (const key in nextState) {
+    if (nextState.hasOwnProperty(key) &&
+      !is(thisState[key], nextState[key])) {
+      return true;
+    }
+  }
+    return false;
+  }
+}  
+```
+
+4. 性能检测react-addons-perf
+组件渲染各个阶段
+Perf.printInclusive(measurements)：所有阶段时间。
+Perf.printExclusive(measurements)：不包含挂载组件的时间，即初始化 props、state，
+调用 componentWillMount 和 componentDidMount 方法的时间等。
+Perf.printWasted(measurements)：监测渲染的内容保持不变的组件（查看哪些组件没有被 shouldComponentUpdate 命中）。
+
+
 
 
 
