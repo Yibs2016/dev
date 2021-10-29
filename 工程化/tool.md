@@ -68,3 +68,17 @@
 			- 对需要编译的文件采用即时编译(按需编译)
 			- optimizeDeps
 
+
+##### npm 
+	package
+	npm仓库包含许多包（大部分是node模块），这些包都有一个package.json描述文件
+	1. scoped unscoped private public  //https://docs.npmjs.com/cli/v7/using-npm/scope
+	unscoped-public
+	scoped-private
+	2. scopes
+	A scope allows you to create a package with the same name as a package created by another user or organization without conflict.
+	module
+	1. nodejs required加载模块，位于node_modules
+	2. package.json文件main字段指定入口文件
+
+ 

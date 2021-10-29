@@ -61,4 +61,49 @@ range('A'.charCodeAt(0), 'Z'.charCodeAt(0), 1).map(x => String.fromCharCode(x));
 ```
 
 
+##### 二进制
+1. Blob 支持文件操作二进制对象 represents a file-like object of immutable, raw data. 
+    blob-----URL.createObjectURL-----Blob URL  用于文件下载，图片显示
+    blob.slice分隔二进制数据
 
+    FileReader.readAsText(Blob)：Blob转文本字符串
+    FileReader.readAsArrayBuffer(Blob)： Blob转ArrayBuffer格式数据
+    FileReader.readAsDataURL(): Blob转Base64格式的Data URL
+  - 欠缺二进制数据细节操作能力，如修改某一部分二进制数据
+
+2. ArrayBuffer represent generic, fixed-length raw binary data buffer. 
+  读取 FileReader将文件-->ArrayBuffer
+  写入 TypeArray DataView
+
+  vs Array 
+  1. 初始化后固定大小，数组可自由增减
+  2. ArrayBuffer数据放栈中
+  3. 只读，写需要借助TypeArray/DataView
+
+```javascript
+const typedArray1 = new Int8Array(8);
+typedArray1[0] = 32;
+const buffer = new ArrayBuffer(16);
+const view = new DataView(buffer);
+view.setInt8(2, 42);
+console.log(view.getInt8(2));
+```
+> ArrayBuffer vs Blob
+> 1. ArrayBuffer可借助TypeArray/DataView修改，Blob则不可变；如果不需要编辑，blob优先
+> 2. ArrayBuffer在内存中；Blob可在磁盘上，缓存存储器和其他地方
+> 3. Blob --> ArrayBuffer readAsArrayBuffer()
+> 4. ArrayBuffer --> new Blob([new Uint8Array(data])
+
+
+
+3. Buffer nodejs中用于io操作
+```javascript
+const req = ctx.req;
+    req.on('data', buf => {
+    chunks.push(buf);  //装填
+})
+req.on('end', () => {
+    let buffer = Buffer.concat(chunks); //拼接
+    console.log(buffer.toString())  //转化
+})
+```
