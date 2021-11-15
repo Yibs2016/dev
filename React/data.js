@@ -67,4 +67,60 @@
 
 	
 
+// 跨组件数据共享
+// redux react-redux redux-saga
+// redux一种机制：把state集中到顶部，灵活将所有state分发给需要的组件 
+	// 整个应用状态存储到一个地方：store
+	// 组件-store.dispatch-派发一个action，被reducer(管理员)处理，更新state
+	// 组件dispatch(派发)action(行为)给store,而非直接通知其它组件
+	// 其他组件订阅store中的state刷新视图
+	// 创建指令(action) 创建reducer(处理函数) 创建store(createStore)
 
+// react-redux react官方提供的react绑定库
+	// 将组件分：容器组件(处理逻辑,不负责UI呈现) UI组件(显示和傻瓜交互: 外部参数,不处理逻辑)
+	// provider(上下文共享store对象) connect(容器组件) mapStateToProps mapDispatchToProps
+
+// 异步后派发actiondedux-saga
+	// takeEvery 无限监听  
+	  while(true){
+		  yield take('INCREMENT_ASYNC');
+		  yield fork(incrementAsync);
+		}
+
+	import { takeEvery, call, put } from 'redux-saga/effects'
+	function* watchFetchData() {
+		yield* takeEvery("FETCH_REQUESTED", fetchData)
+	}
+	export function* fetchData(action) {
+		try {
+				const apiAjax = (params) => fetch(url, params);
+				const data = yield call(apiAjax);
+				yield put({type: "FETCH_SUCCEEDED", data});
+		} catch (error) {
+				yield put({type: "FETCH_FAILED", error});
+		}
+	}
+	// takeLatest
+	function* watchFetchData() {
+		yield* takeLatest('FETCH_REQUESTED', fetchData)
+	}
+	// 同一时间只允许执行1个最后启动的那个任务,之前的会被自定取消
+	
+	// take 监听action  
+	// put 发生action
+	// call 调用函数 阻塞effect
+	// fork 调用函数 不阻塞
+	// select 获取state
+
+	// 使用
+	const sagaMiddleware = createSagaMiddleware() // 创建了一个saga中间件实例
+ 
+	const createStoreWithMiddleware = applyMiddleware(sagaMiddleware)(createStore)
+	const store = createStoreWithMiddleware(rootReducer)
+	//等价于  const store = createStore(reducers,applyMiddlecare(sagaMiddleware))
+
+	sagaMiddleware.run(rootSaga)
+
+	// 总结:
+		// saga中间件绑定到store
+		// run saga 启动action监听函数
