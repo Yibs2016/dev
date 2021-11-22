@@ -12,7 +12,7 @@ function resolvePromise(promise2, x, resolve, reject){
                 then.call(x, (y)=> {
                     if (called) return;
                     called = true;
-                    resolvePromise(promise2, y, resolve, reject)
+                    resolvePromise(promise2, y, resolve, reject)  //递归
                 }, (r)=> {
                     if (called) return;
                     called = true;
@@ -134,3 +134,11 @@ Promise1.resolve(new Promise1((res, rej)=>{
 })).then((data)=>{
     console.log(data)
 })
+
+
+// 分析
+    // constructor executor执行器立即执行， 参数对应resolve和reject
+    // pending到fulfilled/rejected
+    // then对应成功回调onFulfilled,失败回调onRejected,参数可省略
+    // pendding态需要预存回调,状态确定后依次执行(发布订阅)
+    // then返回promise 

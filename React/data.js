@@ -1,6 +1,7 @@
 // setState
 	// 多次state更新会合并(减少渲染频次，优化性能), 异步
 	// ajax, setTimeout等异步行为会阻止合并, 同步
+	// React控制之内的事情处理中，setState异步，控制之外，同步更新
 	onClickHandler = () => {
     this.setState({
       dollars: this.state.dollars + 10
@@ -14,22 +15,15 @@
     console.log('State after (timeout): ' + JSON.stringify(this.state));     //能拿到更改后的值
   }
 	setTimeout(this.onTimeoutHandler, 10000);
+	// promise化
+	const setStatePromise = (me, state)=> {
+		new Promise(resolve=> {
+			me.setState(state, ()=> {
+				resolve()
+			})
+		})
+	}
 
-// 依赖注入 高阶组件
-		var title = 'React Dependency Injection';
-		export default function inject(Component) {
-			return class Injector extends React.Component {
-				render() {
-					return (
-						<Component
-							{...this.state}
-							{...this.props}
-							title={ title }
-						/>
-					)
-				}
-			};
-		}
 
 // context
 	// context类似与事件总线(Event Bus)。context里面维持的是数据而非事件。context贯穿于整个组件树中，所有的组件都可以访问context
@@ -124,3 +118,11 @@
 	// 总结:
 		// saga中间件绑定到store
 		// run saga 启动action监听函数
+
+
+
+
+	// 处理loading
+
+
+	

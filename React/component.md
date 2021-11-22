@@ -101,8 +101,26 @@ Perf.printExclusive(measurements)：不包含挂载组件的时间，即初始�
 Perf.printWasted(measurements)：监测渲染的内容保持不变的组件（查看哪些组件没有被 shouldComponentUpdate 命中）。
 
 
+// 高阶组件
+```javascript
+  var title = 'React Dependency Injection';
+  export default function inject(Component) {
+    return class Injector extends React.Component {
+      render() {
+        return (
+          <Component
+            {...this.state}
+            {...this.props}
+            title={ title }
+          />
+        )
+      }
+    };
+  }
+```
 
 
+##### 组件设计
+###### 单一职责
+在项目中将全部组件拆散，使它们具备单一职责，反而增加繁琐程度，那么应该按照什么原则呢：如果一个功能集合有可能发生变化就需要最大程度保持单一职责
 
-
- 
