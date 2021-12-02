@@ -18,13 +18,23 @@
 
 3 props.children
 ```javascript
-const Test = props => props.children('hello world')
+const Test = props => props.children('hello world')  //函数
 const App = () => (
     <Test>
         {text => <div>{text}</div>}
     </Test>
 )
 ReactDOM.render((<App />, root)  // 返回<div>hello world</div>
+
+const ByDevice = ({children: {mobile, other}}) => {  //对象
+  return Utils.isMobile() ? mobile : other
+}
+<ByDevice> 
+  {{
+    mobile: <div>mobile</div>,
+    other: <div>other</div>,
+  }}
+</ByDevice>
 ``` 
 
 4 封装 “state”

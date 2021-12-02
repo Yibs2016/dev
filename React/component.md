@@ -14,16 +14,22 @@
   - 接收函数，输出函数 
   - 复用性，抽象性
   1. 属性代理 (render返回组件参数)
-  a. 生命周期调用类似堆栈 didmount→HOC didmount→(HOCs didmount)→(HOCs will unmount)→HOC will unmount→unmount
-  b. 控制 props、通过 refs 使用引用、抽象 state 和使用其他元素包裹 WrappedComponent
+    a. 生命周期调用类似堆栈 didmount→HOC didmount→(HOCs didmount)→(HOCs will unmount)→HOC will unmount→unmount
+    b. 控制 props、通过 refs 使用引用、抽象 state 和使用其他元素包裹 WrappedComponent
   2. 反向继承 (继承组件，super.render())
-  a. 生命周期调用类似队列 didmount→HOC didmount→(HOCs didmount)→will unmount→HOC will unmount→(HOCs will unmount)
-  b. 渲染劫持 if super.render() else return null、控制state
+    a. 生命周期调用类似队列 didmount→HOC didmount→(HOCs didmount)→will unmount→HOC will unmount→(HOCs will unmount)
+    b. 渲染劫持 if super.render() else return null、控制state
   
 ##### 纯函数
 a. 给定输入返回相同输出
 b. 没有副作用
 c. 没有额外状态依赖
+实际项目中，需要发送网络请求以获取数据(数据不固定，是一种副作用)，如何最大限度保证应用由纯组件或准组件组成？
+
+##### HOC
+接收一个组件，返回一个新的组件
+特点：劫持，代理
+
 
 ##### 组件性能优化
 主因：影响网页性能--浏览器重绘重排
@@ -61,8 +67,8 @@ b. 设置 props 方法，事件绑定在元素上 ——> 把绑定移到构造�
 背景：对象一般是可变的mutable,引用赋值可以节约内存，但是难以维护；深浅拷贝又会造成内存浪费
 原理：持久化数据结构，对象树中一个节点变化，只修改影响到的节点，其他节点共享
 特点：
-1. 一旦创建就不可更改
-2. 修改immutable返回新immutable对象
+a. 一旦创建就不可更改
+b. 修改immutable返回新immutable对象
 缺点：侵入性强
 
 3.immutable 与 pureRender
@@ -117,10 +123,54 @@ Perf.printWasted(measurements)：监测渲染的内容保持不变的组件（�
       }
     };
   }
+  function withPersistence(storageKey, storage) {
+    return function(WrappedComponent) {
+      return class PersistentComponent extends Component {
+        constructor(props) {
+          super(props) {
+            this.state = {inintialValue: storage.getItem(storageKey)}
+          }
+        }
+        render() {
+          return (
+            <WrappedComponent
+              initialValue={this.state.initialValue}
+              saveValue={this.saveValue}
+              {...this.perops}
+            >
+          )
+        }
+        saveValue(value) {
+          storage.setItem(storageKey, value)
+        } 
+      }
+    }
+  }
+  const LocalStoragePersistentForm = withPersistence('key', localStorage)(PersistentForm);
+  const LocalStorageMyOtherForm = withPersistence('key', localStorage)(MyOtherForm);
+  const SessionStoragePersistentForm = withPersistence('key', sessionStorage)(MyOtherForm);
 ```
+
+##### forwardRef
+React.forwardRef会创建一个React组件：能够将其接受的ref属性转发到其下组件树下的另一个组件中
+```javascript
+const FancyButton = React.forwardRef((props, ref) => (
+  <button ref={ref} className="FancyButton">
+    {props.children}
+  </button>
+));
+
+// You can now get a ref directly to the DOM button:
+const ref = React.createRef();
+<FancyButton ref={ref}>Click me!</FancyButton>;
+```
+
 
 
 ##### 组件设计
 ###### 单一职责
 在项目中将全部组件拆散，使它们具备单一职责，反而增加繁琐程度，那么应该按照什么原则呢：如果一个功能集合有可能发生变化就需要最大程度保持单一职责
+优点：全局掌控，组件维护方便
 
+
+###### 组合是灵魂

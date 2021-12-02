@@ -75,7 +75,7 @@
 	// provider(上下文共享store对象) connect(容器组件) mapStateToProps mapDispatchToProps
 
 // 异步后派发actiondedux-saga
-	// takeEvery 无限监听  
+	// takeEvery 循环监听  
 	  while(true){
 		  yield take('INCREMENT_ASYNC');
 		  yield fork(incrementAsync);
