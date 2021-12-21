@@ -174,3 +174,50 @@ const ref = React.createRef();
 
 
 ###### 组合是灵魂
+
+
+
+
+
+
+
+
+###### 最佳实践
+####### TypographyComponent
+```javascript
+import { alternateFont, typeScale, boldFontWeight } from './styles';
+const Text = ({
+  tag = 'span',
+  size = 4,
+  alt,
+  center,
+  bold,
+  caps,
+  ...props
+  }) => {
+  const Tag = tag;
+  const sx = {
+    fontFamily: alt ? alternateFont : null,
+    fontSize: typeScale[size],
+    fontWeight: bold ? boldFontWeight : null,
+    textAlign: center ? 'center' : null,
+    textTransform: caps ? 'uppercase' : null
+  };
+
+  return <Tag {...props} style={sx}/>
+};
+
+const LeadText = (props) => <Text {...props} tag='p' size={3}/>;
+const Caps = (props) => <Text {...props} caps/>;
+const TypographyComponent = () => (
+  <div>
+    <LeadText>
+      This is a lead with some<Caps>all caps</Caps>.
+    It has a larger font size than the default paragraph.
+    </LeadText>
+    <MetaText>
+      This is smaller text, like form helper copy.
+    </MetaText>
+  </div>
+);
+```
