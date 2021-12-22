@@ -1,4 +1,4 @@
-###### Component Organization
+##### Component Organization
 ```javascript
   componentWillMount () {
     // add event listeners (Flux Store, WebSocket, document, etc.)
@@ -40,7 +40,7 @@ render () {
 }
 ```
 
-###### Function Component 
+##### Function Component 
 ```javascript
 // 解构
 function MyButton({ className, ...props }) {
@@ -63,7 +63,7 @@ const ParentFn = (props) => {
 };
 ```
 
-###### Layout/Style/Container component
+##### Layout/Style/Container component
 ```javascript
 // bad
 class PeopleWrappedInBSRow extends React.Component {
@@ -93,11 +93,11 @@ class SomeView extends React.Component {
 ``` 
 
 
-###### State hoisting
+##### State hoisting
 函数组件没有状态，他们的数据传递给状态化的父容器组件--> 状态提升
 [实现] -从容器组件传递回调函数到子组件
 
-###### Controlled input
+##### Controlled input
 ```javascript
 // 不受控
 <input type="text" />
@@ -110,7 +110,7 @@ class SomeView extends React.Component {
  
 ``` 
 
-###### Naming
+##### Naming
  1. Naming Events
   - begin with handle
   - end with the name of the event they handle (eg, Click, Change)
