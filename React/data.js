@@ -1,5 +1,5 @@
 // setState
-	// 多次state更新会合并(减少渲染频次，优化性能), 异步
+	// 多次setState会合并(减少渲染频次，优化性能), 异步
 	// ajax, setTimeout等异步行为会阻止合并, 同步
 	// React控制之内的事情处理中，setState异步，控制之外，同步更新
 	onClickHandler = () => {
@@ -23,6 +23,34 @@
 			})
 		})
 	}
+
+// ### setState参数
+	// ### 对象
+	// before num: 0
+	this.setState({ num: this.state.num + 1 });
+	this.setState({ num: this.state.num + 1 });
+	// after num: 1
+
+	// ### 函数
+	this.setState((prevState) => ({ num: prevState.num + 1 }));
+	this.setState((prevState) => ({ num: prevState.num + 1 }));
+	// after num: 2
+
+	// 源码中
+  for (var i = replace ? 1 : 0; i < queue.length; i++) {
+		var partial = queue[i];
+		_assign(nextState, typeof partial === 'function' ? partial.call(inst, nextState, props, context) : partial);
+	 }
+	//  传入函数的话，参数 preState 是前一次合并后的结果，所以计算结果是准确的
+
+// ### setState半自动批处理
+	// ### 同步 生命周期或者合成事件中  
+	// ### 异步 fn本身有js异步事件的话，批处理动作无法介入
+
+
+
+
+
 
 
 // context

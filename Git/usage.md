@@ -37,8 +37,7 @@ git push --set-upstream origin sisi/location
   - check tracking branches: git branch -vv
   [Why do I need to do `--set-upstream` all the time?](https://stackoverflow.com/questions/6089294/why-do-i-need-to-do-set-upstream-all-the-time)  
   git config --global push.default current  
-  git config --global branch.autosetupmerge always   
-  git config --global push.default upstream     
+  git config --global branch.autosetupmerge always     
 
 2. 基于某分支开新分支  
 git checkout -b test origin/develop  基于远端develop开test分支
@@ -58,9 +57,9 @@ git config --global core.ignorecase false  大小写敏感 。
   1. 清除改动(重置Resposity或者Index) 
     某个文件 git reset HEAD <file>   -> current HEAD中重置某文件
     所有文件 git reset --hard HEAD/HEAD^/commitId  -> 
-  2. 回到暂存区->回到工作区 
-     a. git reset --soft HEAD^ -> git restore --staged <file>
-     b. soft 撤销commit，不撤销git add .，不删除工作区   
+  2. 回到暂存区->回到工作区   
+     a. git reset --soft HEAD^ -> git restore --staged <file>   
+     b. soft 撤销commit，不撤销git add .，不删除工作区     
         ![avatar](/images/reset-soft.png)  
         mixed 撤销commit，撤销git add . ，不删除工作区  
         ![avatar](/images/reset-mixed.png)  
@@ -75,9 +74,12 @@ git config --global core.ignorecase false  大小写敏感 。
   1. git reflog  
   查看所有分支的所有操作记录（包括reset操作后被删除的commit）  
   2. git rm 删除文件  
-     git rm -r 删除文件夹  
-     git mv old  new 重命名  
-     git revert 5[commitID]...1[commitID]  不包含1   5-4-3-2 依次回退， 依次产生多个Revert "msg"  
-     git revert -n 5[commitID]...1[commitID]  依次回退，does not make the commits msg  
-
-
+      git rm -r 删除文件夹  
+      git mv old  new 重命名  
+      git revert 5[commitID]...1[commitID]  不包含1   5-4-3-2 依次回退， 依次产生多个Revert "msg"  
+      git revert -n 5[commitID]...1[commitID]  依次回退，does not make the commits msg  
+  3. 获取当前分支名
+      git name-rev --name-only HEAD  
+      git rev-parse --abbrev-ref HEAD  
+      git symbolic-ref --short HEAD  
+ 
