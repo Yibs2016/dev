@@ -1,8 +1,9 @@
-# What is this?
+# github dev
+### sign
+那时候，什么也没有，什么也不怕
 
-Press the `.` key on any repository or pull request, or swap `.com` with `.dev` in the URL, to go directly to a VS Code environment in your browser.
+### sign
+[编程的智慧](https://www.yinwang.org/blog-cn/2015/11/21/programming-philosophy)
 
-![github dev](https://user-images.githubusercontent.com/856858/130119109-4769f2d7-9027-4bc4-a38c-10f297499e8f.gif)
-
-# Why?
-It’s a quick way to edit and navigate code. It's especially useful if you want to edit multiple files at a time or take advantage of all the powerful code editing features of Visual Studio Code when making a quick change. For more information, see our [documentation](https://github.co/codespaces-editor-help).
+### sign
+深入其设计和实现底层才能全面掌握技术

@@ -142,3 +142,17 @@ Promise1.resolve(new Promise1((res, rej)=>{
     // then对应成功回调onFulfilled,失败回调onRejected,参数可省略
     // pendding态需要预存回调,状态确定后依次执行(发布订阅)
     // then返回promise 
+
+
+// promises-aplus-tests 
+Promise1.deferred = function() {
+    var result = {};
+    result.promise = new Promise1(function(resolve, reject) {
+        result.resolve = resolve;
+        result.reject = reject;
+    });
+    
+    return result;
+};
+    
+module.exports = Promise1;
