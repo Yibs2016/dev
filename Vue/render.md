@@ -29,9 +29,25 @@ invokes the render functions, walks the returned virtual DOM tree, and creates a
 3. Patch
 Dependency used during mount changes, the effect re-runs. A new vdom tree is created. The runtime renderer compares it with the old one, and applies necessary updates to the actual DOM.
 
+##### 依赖收集
+1. `observer` 的过程中会注册 `get` 方法，该方法用来进行「**依赖收集**」，「**依赖收集**」的过程就是把 `Watcher` 实例存放到对应的 `Dep` 对象中去。（Watcher 对象+触发 `get` 方法）
+2. notify通知所有观察者更新视图，使用队列来的策略异步更新视图
+ 
+##### 异步更新
+1. 数据变更就更新视图是低效的
+```
+for(let i = 0; i < 1000; i++) {
+    this.number++;
+}
+```
+2. 对应的 `Watcher` 对象会被 `push` 进一个队列 `queue` 中，在下一个 tick 的时候遍历这个队列 `queue` 的 `run`方法（ `Watcher` 对象的一个方法，用来触发 `patch` 操作） 一遍。
+3. 源码中分别用 `Promise`、`setTimeout`、`setImmediate` 等去模拟
 
 ##### Q & A
 1. AST VS VDOM
 ast用来描述语法，vdom用来描述dom结构，可以加入需要的字段
+
+2. WHY VDOM
+vdom把渲染过程抽象化，使得组件的抽象能力得到提升，并可以适配dom以外的渲染目标（跨平台能力），比如weex, node
 
 
