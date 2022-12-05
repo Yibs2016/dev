@@ -43,11 +43,16 @@ for(let i = 0; i < 1000; i++) {
 2. 对应的 `Watcher` 对象会被 `push` 进一个队列 `queue` 中，在下一个 tick 的时候遍历这个队列 `queue` 的 `run`方法（ `Watcher` 对象的一个方法，用来触发 `patch` 操作） 一遍。
 3. 源码中分别用 `Promise`、`setTimeout`、`setImmediate` 等去模拟
 
+##### 要点
+1. 每个vue组件都是个vue实例，构造器继承与Vue; 初始化时创建一个渲染watcher
+2. 对于值为对象的属性，
+
+
 ##### Q & A
 1. AST VS VDOM
 ast用来描述语法，vdom用来描述dom结构，可以加入需要的字段
 
 2. WHY VDOM
-vdom把渲染过程抽象化，使得组件的抽象能力得到提升，并可以适配dom以外的渲染目标（跨平台能力），比如weex, node
+js描述dom节点信息，vdom把渲染过程抽象化，使得组件的抽象能力得到提升，并可以适配dom以外的渲染目标（跨平台能力），比如weex, node
 
 
