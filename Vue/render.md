@@ -57,3 +57,25 @@ js描述dom节点信息，vdom把渲染过程抽象化，使得组件的抽象�
 尤雨溪--Virtual DOM 真正的价值从来都不是性能，而是它 1) 为函数式的 UI 编程方式打开了大门；2) 可以渲染到 DOM 以外的 backend
 
 
+##### draft
+```
+// source
+    if (oldStartIdx > oldEndIdx) {
+      refElm = isUndef(newCh[newEndIdx + 1]) ? null : newCh[newEndIdx + 1].elm
+      addVnodes(parentElm, refElm, newCh, newStartIdx, newEndIdx, insertedVnodeQueue)
+    } else if (newStartIdx > newEndIdx) {
+      removeVnodes(oldCh, oldStartIdx, oldEndIdx)
+    }
+
+// 调试时候这个是ok的
+  if (newStartIndex <= newEndIndex) {
+     insert()
+  } 
+  if (oldStartIndex <= oldEndIndex) {
+    for (let i = oldStartIndex; i <= oldEndIndex; i++) {
+      removeChild()
+    }
+  }
+```
+
+
